@@ -9,6 +9,7 @@
     "/v1/chat/completions": {
       "post": {
         "summary": "Chat completions balanced across multiple Cloudflare accounts with automatic failover",
+        "operationId": "createChatCompletion",
         "x-zuplo-route": {
           "corsPolicy": "anything-goes",
           "policies": {
@@ -32,6 +33,7 @@
     "/v1/embeddings": {
       "post": {
         "summary": "Embeddings balanced across multiple Jina / Cloudflare accounts with automatic fallback",
+        "operationId": "createEmbedding",
         "x-zuplo-route": {
           "corsPolicy": "anything-goes",
           "policies": {
