@@ -11,7 +11,7 @@
         "summary": "Chat completions balanced across multiple Cloudflare accounts with automatic failover",
         "operationId": "createChatCompletion",
         "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
+          "corsPolicy": "anything",
           "policies": {
             "inbound": [
               "ai-gateway-auth-v2-inbound",
@@ -24,8 +24,9 @@
             ]
           },
           "handler": {
-            "export": "default",
-            "module": "$import(@zuplo/runtime)"
+            "export": "aiGatewayHandlerV2",
+            "module": "$import(@zuplo/runtime)",
+            "options": {}
           }
         }
       }
@@ -35,7 +36,7 @@
         "summary": "Embeddings balanced across multiple Jina / Cloudflare accounts with automatic fallback",
         "operationId": "createEmbedding",
         "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
+          "corsPolicy": "anything",
           "policies": {
             "inbound": [
               "ai-gateway-auth-v2-inbound",
@@ -48,8 +49,9 @@
             ]
           },
           "handler": {
-            "export": "default",
-            "module": "$import(@zuplo/runtime)"
+            "export": "aiGatewayHandlerV2",
+            "module": "$import(@zuplo/runtime)",
+            "options": {}
           }
         }
       }
