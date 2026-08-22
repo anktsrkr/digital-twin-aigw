@@ -46,7 +46,11 @@
           "models": {
             "completions": {
               "allowList": [
-                "openai/gpt-4o-mini"
+                "openai/gpt-4o-mini",
+                "@cf/google/gemma-4-26b-a4b-it",
+                "@cf/meta/llama-3.3-70b-instruct",
+                "@cf/meta/llama-3-8b-instruct",
+                "@cf/qwen/qwen2.5-72b-instruct"
               ]
             }
           }
@@ -62,7 +66,7 @@
         "options": {
           "models": {
             "completions": {
-              "fallback": "openai/gpt-4o-mini"
+              "fallback": "@cf/google/gemma-4-26b-a4b-it"
             }
           },
           "fallbackTimeoutSeconds": 60
@@ -173,6 +177,26 @@
             "jinaai02"
           ],
           "targetModel": "jina-embeddings-v5-text-small",
+          "strategy": "round-robin",
+          "enableFallback": true,
+          "fallbackTimeoutSeconds": 15
+        }
+      }
+    },
+    {
+      "name": "round-robin-cloudflare",
+      "policyType": "custom-code-inbound",
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/round-robin-cloudflare)",
+        "options": {
+          "providers": [
+            "cloudflare",
+            "cloudflare-2",
+            "cloudflare-3"
+          ],
+          "targetModel": "@cf/google/gemma-4-26b-a4b-it",
+          "capability": "completions",
           "strategy": "round-robin",
           "enableFallback": true,
           "fallbackTimeoutSeconds": 15
