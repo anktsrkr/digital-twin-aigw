@@ -10,7 +10,7 @@
       "post": {
         "summary": "Chat completions balanced across multiple Cloudflare accounts with automatic failover",
         "x-zuplo-route": {
-          "corsPolicy": "anything",
+          "corsPolicy": "anything-goes",
           "policies": {
             "inbound": [
               "ai-gateway-auth-v2-inbound",
@@ -33,7 +33,7 @@
       "post": {
         "summary": "Embeddings balanced across multiple Jina / Cloudflare accounts with automatic fallback",
         "x-zuplo-route": {
-          "corsPolicy": "anything",
+          "corsPolicy": "anything-goes",
           "policies": {
             "inbound": [
               "ai-gateway-auth-v2-inbound",

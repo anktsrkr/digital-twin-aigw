@@ -1,4 +1,26 @@
 {
+  "corsPolicies": [
+    {
+      "name": "anything",
+      "allowedOrigins": [
+        "*"
+      ],
+      "allowedMethods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "OPTIONS",
+        "HEAD",
+        "PATCH"
+      ],
+      "allowedHeaders": [
+        "*"
+      ],
+      "allowCredentials": false,
+      "maxAge": 86400
+    }
+  ],
   "policies": [
     {
       "handler": {
@@ -226,33 +248,6 @@
         "module": "$import(./modules/round-robin-cloudflare)",
         "options": {
           "cooldownMinutes": 15
-        }
-      }
-    },
-    {
-      "name": "anything",
-      "policyType": "cors-inbound",
-      "handler": {
-        "export": "CorsInboundPolicy",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "allowOrigins": [
-            "*"
-          ],
-          "allowMethods": [
-            "GET",
-            "POST",
-            "PUT",
-            "DELETE",
-            "OPTIONS",
-            "HEAD",
-            "PATCH"
-          ],
-          "allowHeaders": [
-            "*"
-          ],
-          "allowCredentials": false,
-          "maxAge": 86400
         }
       }
     }
