@@ -228,6 +228,33 @@
           "cooldownMinutes": 15
         }
       }
+    },
+    {
+      "name": "anything",
+      "policyType": "cors-inbound",
+      "handler": {
+        "export": "CorsInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "allowOrigins": [
+            "*"
+          ],
+          "allowMethods": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "OPTIONS",
+            "HEAD",
+            "PATCH"
+          ],
+          "allowHeaders": [
+            "*"
+          ],
+          "allowCredentials": false,
+          "maxAge": 86400
+        }
+      }
     }
   ]
 }
