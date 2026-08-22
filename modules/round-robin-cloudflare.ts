@@ -242,12 +242,11 @@ export default async function roundRobinCloudflare(
   }
 
   // 5. Store selected providers in context.custom so outbound handler can track response
-  context.custom = {
-    ...context.custom,
-    selectedPrimaryProvider: primary.providerName,
-    selectedBackupProvider: backupProviderName,
-    cooldownMinutes,
-  };
+  if (context.custom) {
+    context.custom.selectedPrimaryProvider = primary.providerName;
+    context.custom.selectedBackupProvider = backupProviderName;
+    context.custom.cooldownMinutes = cooldownMinutes;
+  }
 
   // 6. Update AI Gateway model routing in Zuplo context
   const updatedRouting: Record<string, any> = {

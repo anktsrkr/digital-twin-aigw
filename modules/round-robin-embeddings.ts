@@ -200,12 +200,11 @@ export default async function roundRobinEmbeddings(
   }
 
   // Store selected providers in context.custom so outbound handler can track response
-  context.custom = {
-    ...context.custom,
-    selectedPrimaryProvider: primary.providerName,
-    selectedBackupProvider: backupProviderName,
-    cooldownMinutes,
-  };
+  if (context.custom) {
+    context.custom.selectedPrimaryProvider = primary.providerName;
+    context.custom.selectedBackupProvider = backupProviderName;
+    context.custom.cooldownMinutes = cooldownMinutes;
+  }
 
   // Update model routing in Zuplo context
   await AIGatewayModelRouting.set(context, {
