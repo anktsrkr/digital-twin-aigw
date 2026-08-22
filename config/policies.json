@@ -1,0 +1,163 @@
+{
+  "policies": [
+    {
+      "handler": {
+        "export": "AIGatewayAuthV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {}
+      },
+      "name": "ai-gateway-auth-v2-inbound",
+      "policyType": "ai-gateway-auth-v2"
+    },
+    {
+      "handler": {
+        "export": "AIGatewayConfigurationLoaderV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "cacheTtlSeconds": 5
+        }
+      },
+      "name": "ai-gateway-configuration-loader-v2-inbound",
+      "policyType": "ai-gateway-configuration-loader-v2"
+    },
+    {
+      "handler": {
+        "export": "AIGatewayConfigurationExecutorV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {}
+      },
+      "name": "ai-gateway-configuration-executor-v2-inbound",
+      "policyType": "ai-gateway-configuration-executor-v2"
+    },
+    {
+      "handler": {
+        "export": "AIGatewayMeteringV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {}
+      },
+      "name": "ai-gateway-metering-v2-inbound",
+      "policyType": "ai-gateway-metering-v2"
+    },
+    {
+      "handler": {
+        "export": "AIGatewayModelFilteringV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "models": {
+            "completions": {
+              "allowList": ["openai/gpt-4o-mini"]
+            }
+          }
+        }
+      },
+      "name": "ai-gateway-model-filtering-v2-inbound",
+      "policyType": "ai-gateway-model-filtering-v2"
+    },
+    {
+      "handler": {
+        "export": "AIGatewayFallbackModelV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "models": {
+            "completions": {
+              "fallback": "openai/gpt-4o-mini"
+            }
+          },
+          "fallbackTimeoutSeconds": 60
+        }
+      },
+      "name": "ai-gateway-fallback-model-v2-inbound",
+      "policyType": "ai-gateway-fallback-model-v2"
+    },
+    {
+      "handler": {
+        "export": "AIGatewaySemanticCacheV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "semanticTolerance": 0.4,
+          "expirationSecondsTtl": 3600
+        }
+      },
+      "name": "ai-gateway-semantic-cache-v2-inbound",
+      "policyType": "ai-gateway-semantic-cache-v2-inbound"
+    },
+    {
+      "handler": {
+        "export": "AkamaiAIFirewallV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "configurationId": "",
+          "api-key": ""
+        }
+      },
+      "name": "akamai-ai-firewall-v2-inbound",
+      "policyType": "akamai-ai-firewall-v2-inbound"
+    },
+    {
+      "handler": {
+        "export": "CometOpikTracingV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "apiKey": "",
+          "projectName": "",
+          "workspace": ""
+        }
+      },
+      "name": "comet-opik-tracing-v2-inbound",
+      "policyType": "comet-opik-tracing-v2-inbound"
+    },
+    {
+      "handler": {
+        "export": "GalileoTracingV2InboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "apiKey": "",
+          "projectId": "",
+          "logStreamId": ""
+        }
+      },
+      "name": "galileo-tracing-v2-inbound",
+      "policyType": "galileo-tracing-v2-inbound"
+    },
+    {
+      "handler": {
+        "export": "AIGatewayDlpInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "rules": {
+            "inbound": {
+              "pii": {
+                "action": "mask"
+              },
+              "secret": {
+                "action": "block"
+              },
+              "finance-credit-card": {
+                "action": "mask"
+              },
+              "finance-iban": {
+                "action": "mask"
+              }
+            },
+            "outbound": {
+              "pii": {
+                "action": "mask"
+              },
+              "secret": {
+                "action": "block"
+              },
+              "finance-credit-card": {
+                "action": "mask"
+              },
+              "finance-iban": {
+                "action": "mask"
+              }
+            }
+          }
+        }
+      },
+      "name": "ai-gateway-dlp-inbound",
+      "policyType": "ai-gateway-dlp"
+    }
+  ]
+}

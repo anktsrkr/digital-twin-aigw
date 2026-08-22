@@ -1,0 +1,54 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "AI Gateway API",
+    "description": "A unified API gateway for multiple AI providers. OpenAI-compatible ops are served under /{app_id}/v1/*; other paths under /{app_id} are rejected."
+  },
+  "paths": {
+    "/:app_id/(.*)": {
+      "x-zuplo-path": {
+        "pathMode": "url-pattern"
+      },
+      "get,post,delete": {
+        "summary": "AI Gateway catch-all",
+        "description": "Routes AI requests under /{app_id}/* to the AI Gateway handler. The configuration loader loads the application configuration from the app_id path segment; the configuration executor then runs the application's inboundPolicyChain. Only paths whose suffix is a supported /v1/... operation succeed (/v1/chat/completions, /v1/embeddings, /v1/messages, /v1/responses and its sub-resources); anything else under /{app_id} returns 404.",
+        "operationId": "aiGatewayCatchAll",
+        "responses": {
+          "200": {
+            "description": "Successful AI Gateway response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized — returned only when the application's inboundPolicyChain includes ai-gateway-auth-v2-inbound, or authentication runs before the configuration loader"
+          },
+          "403": {
+            "description": "Forbidden — returned by per-app policies, such as an API key issued for a different app_id or a model the app does not allow"
+          },
+          "404": {
+            "description": "Unsupported AI Gateway endpoint"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "aiGatewayHandlerV2",
+            "module": "$import(@zuplo/runtime)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": [
+              "ai-gateway-configuration-loader-v2-inbound",
+              "ai-gateway-configuration-executor-v2-inbound"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
