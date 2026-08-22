@@ -8,14 +8,13 @@ import {
 export interface RoundRobinCloudflareOptions {
   /**
    * Explicit list of Cloudflare provider names configured in Zuplo Settings
-   * (e.g. ["cloudflare", "cloudflare-2", "cloudflare-3"]).
+   * (e.g. ["cloudflare", "cloudflare-2"]).
    * If omitted, all active providers containing "cloudflare" or "cf" are automatically discovered.
    */
   providers?: string[];
 
   /**
    * Target model to match (e.g. "@cf/google/gemma-4-26b-a4b-it" or "@cf/meta/llama-3.3-70b-instruct").
-   * If omitted, the policy dynamically inspects the request body `model` field or matches any active model.
    */
   targetModel?: string;
 
@@ -62,25 +61,9 @@ export default async function roundRobinCloudflare(
   }
 
   const catalog = await AIGatewayModels.load(context);
+  const targetModel = options.targetModel;
 
-  // 1. Determine target model (from options, or dynamically from request body if available)
-  let targetModel = options.targetModel;
-  if (!targetModel && request.method === "POST") {
-    const contentType = request.headers.get("content-type") ?? "";
-    if (contentType.includes("application/json")) {
-      try {
-        const cloned = request.clone();
-        const body = (await cloned.json()) as { model?: string };
-        if (body && typeof body.model === "string" && body.model.trim()) {
-          targetModel = body.model.trim();
-        }
-      } catch {
-        // Ignore JSON parse errors in inbound inspector
-      }
-    }
-  }
-
-  // 2. Identify eligible Cloudflare providers
+  // 1. Identify eligible Cloudflare providers
   const allowed = options.providers?.map((p) => p.toLowerCase());
   const candidates = catalog
     .filter(({ providerName }) => {
@@ -123,7 +106,7 @@ export default async function roundRobinCloudflare(
     );
   }
 
-  // 3. Select primary provider using Round-Robin or Random strategy
+  // 2. Select primary provider using Round-Robin or Random strategy
   let primaryIndex = 0;
   if (options.strategy === "random") {
     primaryIndex = Math.floor(Math.random() * candidates.length);
@@ -137,7 +120,7 @@ export default async function roundRobinCloudflare(
 
   let routeConfig: any = `${primary.providerName}/${primary.model.model}`;
 
-  // 4. Configure automatic fallback to the next Cloudflare account if multiple accounts exist
+  // 3. Configure automatic fallback to the next Cloudflare account if multiple accounts exist
   if (options.enableFallback !== false && candidates.length > 1) {
     const backupIndex = (primaryIndex + 1) % candidates.length;
     const backup = candidates[backupIndex];
@@ -154,7 +137,7 @@ export default async function roundRobinCloudflare(
     }
   }
 
-  // 5. Update AI Gateway model routing in Zuplo context
+  // 4. Update AI Gateway model routing in Zuplo context
   const updatedRouting: Record<string, any> = {
     ...existingRouting,
     [capability]: routeConfig,
