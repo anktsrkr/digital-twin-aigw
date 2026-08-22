@@ -162,7 +162,7 @@
           }
         }
       },
-      "name": "ai-gateway-dlp-inbound",
+      "name": "smart-dlp",
       "policyType": "custom-code-inbound"
     },
     {
