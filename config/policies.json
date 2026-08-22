@@ -45,7 +45,9 @@
         "options": {
           "models": {
             "completions": {
-              "allowList": ["openai/gpt-4o-mini"]
+              "allowList": [
+                "openai/gpt-4o-mini"
+              ]
             }
           }
         }
@@ -158,6 +160,24 @@
       },
       "name": "ai-gateway-dlp-inbound",
       "policyType": "ai-gateway-dlp"
+    },
+    {
+      "name": "round-robin-embeddings",
+      "policyType": "custom-code-inbound",
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/round-robin-embeddings)",
+        "options": {
+          "providers": [
+            "jinaai",
+            "jinaai02"
+          ],
+          "targetModel": "jina-embeddings-v5-text-small",
+          "strategy": "round-robin",
+          "enableFallback": true,
+          "fallbackTimeoutSeconds": 15
+        }
+      }
     }
   ]
 }
