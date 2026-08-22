@@ -25,6 +25,13 @@ export default async function roundRobinEmbeddings(
   context: ZuploContext,
   options: RoundRobinEmbeddingsOptions = {},
 ): Promise<ZuploRequest | Response> {
+  const url = request.url.toLowerCase();
+
+  // Guard: Only execute for embeddings requests
+  if (!url.includes("/embeddings")) {
+    return request;
+  }
+
   const allowed = options.providers?.map((p) => p.toLowerCase());
   const catalog = await AIGatewayModels.load(context);
 

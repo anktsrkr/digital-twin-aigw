@@ -50,6 +50,17 @@ export default async function roundRobinCloudflare(
   options: RoundRobinCloudflareOptions = {},
 ): Promise<ZuploRequest | Response> {
   const capability = options.capability ?? "completions";
+  const url = request.url.toLowerCase();
+
+  // Guard: If this policy is configured for completions, skip embeddings requests
+  if (capability === "completions" && url.includes("/embeddings")) {
+    return request;
+  }
+  // Guard: If configured for embeddings, skip non-embeddings requests
+  if (capability === "embeddings" && !url.includes("/embeddings")) {
+    return request;
+  }
+
   const catalog = await AIGatewayModels.load(context);
 
   // 1. Determine target model (from options, or dynamically from request body if available)
