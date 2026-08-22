@@ -1,0 +1,56 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Zuplo Multi-Account AI Gateway",
+    "version": "1.0.0",
+    "description": "Multi-provider, multi-account AI Gateway with automatic round-robin and transparent 429 failover."
+  },
+  "paths": {
+    "/v1/chat/completions": {
+      "post": {
+        "summary": "Chat completions balanced across multiple Cloudflare accounts with automatic failover",
+        "x-zuplo-route": {
+          "corsPolicy": "anything",
+          "policies": {
+            "inbound": [
+              "ai-gateway-auth-v2-inbound",
+              "round-robin-cloudflare",
+              "ai-gateway-configuration-loader-v2-inbound",
+              "ai-gateway-configuration-executor-v2-inbound"
+            ],
+            "outbound": [
+              "round-robin-cloudflare-outbound"
+            ]
+          },
+          "handler": {
+            "export": "default",
+            "module": "$import(@zuplo/runtime)"
+          }
+        }
+      }
+    },
+    "/v1/embeddings": {
+      "post": {
+        "summary": "Embeddings balanced across multiple Jina / Cloudflare accounts with automatic fallback",
+        "x-zuplo-route": {
+          "corsPolicy": "anything",
+          "policies": {
+            "inbound": [
+              "ai-gateway-auth-v2-inbound",
+              "round-robin-embeddings",
+              "ai-gateway-configuration-loader-v2-inbound",
+              "ai-gateway-configuration-executor-v2-inbound"
+            ],
+            "outbound": [
+              "round-robin-embeddings-outbound"
+            ]
+          },
+          "handler": {
+            "export": "default",
+            "module": "$import(@zuplo/runtime)"
+          }
+        }
+      }
+    }
+  }
+}

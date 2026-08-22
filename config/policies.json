@@ -179,7 +179,20 @@
           "targetModel": "jina-embeddings-v5-text-small",
           "strategy": "round-robin",
           "enableFallback": true,
-          "fallbackTimeoutSeconds": 15
+          "fallbackTimeoutSeconds": 5,
+          "enableCircuitBreaker": true,
+          "cooldownMinutes": 15
+        }
+      }
+    },
+    {
+      "name": "round-robin-embeddings-outbound",
+      "policyType": "custom-code-outbound",
+      "handler": {
+        "export": "outboundHandler",
+        "module": "$import(./modules/round-robin-embeddings)",
+        "options": {
+          "cooldownMinutes": 15
         }
       }
     },
@@ -199,7 +212,20 @@
           "capability": "completions",
           "strategy": "round-robin",
           "enableFallback": true,
-          "fallbackTimeoutSeconds": 15
+          "fallbackTimeoutSeconds": 5,
+          "enableCircuitBreaker": true,
+          "cooldownMinutes": 15
+        }
+      }
+    },
+    {
+      "name": "round-robin-cloudflare-outbound",
+      "policyType": "custom-code-outbound",
+      "handler": {
+        "export": "outboundHandler",
+        "module": "$import(./modules/round-robin-cloudflare)",
+        "options": {
+          "cooldownMinutes": 15
         }
       }
     }
