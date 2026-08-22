@@ -127,8 +127,8 @@
     },
     {
       "handler": {
-        "export": "AIGatewayDlpInboundPolicy",
-        "module": "$import(@zuplo/runtime)",
+        "export": "default",
+        "module": "$import(./modules/smart-dlp)",
         "options": {
           "rules": {
             "inbound": {
@@ -163,7 +163,7 @@
         }
       },
       "name": "ai-gateway-dlp-inbound",
-      "policyType": "ai-gateway-dlp"
+      "policyType": "custom-code-inbound"
     },
     {
       "name": "round-robin-embeddings",
